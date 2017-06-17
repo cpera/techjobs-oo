@@ -31,8 +31,8 @@ public class JobController {
         Job somejob = jobData.findById(id);
         ArrayList<Job> jobs = new ArrayList<>();
         jobs.add(somejob);
-        model.addAttribute(id);
         model.addAttribute(jobs);
+        model.addAttribute(id);
 
         return "job-detail";
     }
@@ -59,14 +59,20 @@ public class JobController {
         int locationId = jobForm.getLocationId();
         int positionTypeId = jobForm.getPositionTypeId();
 
-        Employer employer = null; // need to get the employer info based on the employer id
-        CoreCompetency coreCompetency = null; // need to get the skill info based on the skillid
-        Location location = null; // need to get the location info based on the locationid
-        PositionType positionType = null; //need to get the positionType based on the positionTypeId
+        Employer employer = jobData.getEmployers().findById(employerId);; // need to get the employer info based on the employer id
+        CoreCompetency coreCompetency = jobData.getCoreCompetencies().findById(skillId); // need to get the skill info based on the skillid
+        Location location = jobData.getLocations().findById(locationId); // need to get the location info based on the locationid
+        PositionType positionType = jobData.getPositionTypes().findById(positionTypeId); //need to get the positionType based on the positionTypeId
 
-        Job newjob = new Job(name, employer, location, positionType, coreCompetency);
+        Job newJob = new Job(name, employer, location, positionType, coreCompetency);
+        jobData.add(newJob);
+        int nextJobId = newJob.getId();
 
-        return "";
+        ArrayList<Job> jobs = new ArrayList<>();
+        jobs.add(newJob);
+        model.addAttribute(nextJobId);
+        model.addAttribute(jobs);
 
+        return "redirect:/job?id=" + nextJobId;
     }
 }
