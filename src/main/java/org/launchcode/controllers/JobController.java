@@ -31,8 +31,8 @@ public class JobController {
         Job somejob = jobData.findById(id);
         ArrayList<Job> jobs = new ArrayList<>();
         jobs.add(somejob);
-        model.addAttribute(jobs);
-        model.addAttribute(id);
+        model.addAttribute("jobs",jobs);
+        model.addAttribute("id",id);
 
         return "job-detail";
     }
